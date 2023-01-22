@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Text, View, ScrollView, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
 import { api } from '../lib/axios';
 import { generateRangeDatesFromYearStart } from '../utils/generate-range-between-dates';
+
 import { Header } from '../components/Header';
 import { Loading } from '../components/Loading';
 import { HabitDay, DAY_SIZE } from '../components/HabitDay';
@@ -26,7 +28,7 @@ export function Home() {
 
   const { navigate } = useNavigation();
 
-  async function fetchData() {
+  const fetchData = async () => {
     try {
       setLoading(true);
       const response = await api.get('/summary');
@@ -37,11 +39,13 @@ export function Home() {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   if (loading) {
     return <Loading />;

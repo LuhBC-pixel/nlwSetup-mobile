@@ -28,10 +28,10 @@ export function New() {
   const [title, setTitle] = useState('');
   const [weekDays, setWeekDays] = useState<number[]>([]);
 
-  async function handleCreateNewHabit() {
+  const handleCreateNewHabit = async () => {
     try {
       if (!title.trim() || weekDays.length === 0) {
-        Alert.alert(
+        return Alert.alert(
           'Novo Hábito',
           'Informe o nome do Hábito e escolha a periodicidade.'
         );
@@ -50,9 +50,9 @@ export function New() {
       console.log(error);
       Alert.alert('Ops', 'Não foi possível criar o novo Hábito.');
     }
-  }
+  };
 
-  function handleToggleWeekDay(weekDayIndex: number) {
+  const handleToggleWeekDay = (weekDayIndex: number) => {
     if (weekDays.includes(weekDayIndex)) {
       setWeekDays((prevState) =>
         prevState.filter((weekDay) => weekDay !== weekDayIndex)
